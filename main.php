@@ -18,7 +18,7 @@
         <div>
           <label class="text-xl font-bold text-white">Store</label>
           <a href="#" class="text-white hover:text-gray-200 px-3">Home</a>
-          <a href="./index.html" class="text-white hover:text-gray-200 px-3"
+          <a href="./index.php" class="text-white hover:text-gray-200 px-3"
             >Log Out</a
           >
         </div>

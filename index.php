@@ -46,7 +46,7 @@
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="button"
-            onclick="window.location.href='./main.html'"
+            onclick="window.location.href='./main.php'"
           >
             Sign In
           </button>
@@ -60,7 +60,7 @@
         <div class="text-center mt-4">
           <p class="text-blue-600 text-sm">
             Don't have an account?
-            <a href="./register.html" class="text-blue-500 hover:text-blue-800">
+            <a href="./register.php" class="text-blue-500 hover:text-blue-800">
               Sign up
             </a>
           </p>
