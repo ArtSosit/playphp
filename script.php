@@ -35,4 +35,5 @@ action']); break; } } else { echo json_encode(['status' => 'error', 'message' =>
 'Action not specified']); } exit; } // Handle GET requests if
 ($_SERVER['REQUEST_METHOD'] === 'GET') { echo json_encode(['cart' =>
 $_SESSION['cart']]); exit; } // Handle invalid requests http_response_code(400);
-echo json_encode(['status' => 'error', 'message' => 'Invalid request']); ?>
+echo json_encode(['status' => 'error', 'message' => 'Invalid request']); 
+?>
