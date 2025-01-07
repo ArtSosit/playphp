@@ -12,28 +12,34 @@ if (!isset($_SESSION['cart'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);
 
-    // Handle remove action
-    if (isset($input['action'])) {
-        switch ($input['action']) {
-            case 'remove':
-                if (isset($input['index']) && is_numeric($input['index'])) {
-                    $index = (int) $input['index'];
+    if (isset($input['product'])) {
+        // Add item to the cart
+        $_SESSION['cart'][] = $input['product'];
+        echo json_encode(['status' => 'success', 'message' => 'Product added to cart']);
+        exit;
+    }
 
-                    if (isset($_SESSION['cart'][$index])) {
-                        unset($_SESSION['cart'][$index]);
-                        $_SESSION['cart'] = array_values($_SESSION['cart']); // Re-index the cart array
-                        echo json_encode(['status' =>
-'success', 'message' => 'Item removed from cart']); } else { echo
-json_encode(['status' => 'error', 'message' => 'Item not found']); } } else {
-echo json_encode(['status' => 'error', 'message' => 'Invalid index']); } break;
-case 'add': if (isset($input['product']) && is_array($input['product'])) {
-$_SESSION['cart'][] = $input['product']; echo json_encode(['status' =>
-'success', 'message' => 'Item added to cart']); } else { echo
-json_encode(['status' => 'error', 'message' => 'Invalid product data']); }
-break; default: echo json_encode(['status' => 'error', 'message' => 'Invalid
-action']); break; } } else { echo json_encode(['status' => 'error', 'message' =>
-'Action not specified']); } exit; } // Handle GET requests if
-($_SERVER['REQUEST_METHOD'] === 'GET') { echo json_encode(['cart' =>
-$_SESSION['cart']]); exit; } // Handle invalid requests http_response_code(400);
-echo json_encode(['status' => 'error', 'message' => 'Invalid request']); 
-?>
+    if (isset($input['action']) && $input['action'] === 'remove' && isset($input['index'])) {
+        $index = $input['index'];
+
+        // Remove item from the cart
+        if (isset($_SESSION['cart'][$index])) {
+            unset($_SESSION['cart'][$index]);
+            $_SESSION['cart'] = array_values($_SESSION['cart']); // Re-index array
+            echo json_encode(['status' => 'success', 'message' => 'Item removed from cart']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Item not found']);
+        }
+        exit;
+    }
+}
+
+// Handle GET requests (fetch cart)
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    echo json_encode(['cart' => $_SESSION['cart']]);
+    exit;
+}
+
+// Invalid request handling
+http_response_code(400);
+echo json_encode(['status' => 'error', 'message' => 'Invalid request']);

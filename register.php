@@ -60,7 +60,7 @@
           </button>
           <a
             class="inline-block align-baseline font-bold text-sm text-blue-600 hover:text-blue-800"
-            href="index.html"
+            href="index.php"
           >
             Already have an account?
           </a>
