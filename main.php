@@ -45,3 +45,76 @@
 </body>
 
 </html>
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "test01";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+
+// Add a product to the database
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_name'])) {
+  $product_name = $_POST['product_name'];
+  $product_price = $_POST['product_price'];
+  $description = $_POST['description'];
+  $sql = "INSERT INTO product (title, price,descrip) VALUES ('$product_name', '$product_price',$description)";
+  if ($conn->query($sql) === TRUE) {
+    echo "New product added successfully";
+  } else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
+  }
+}
+
+// Fetch products from the database
+$sql = "SELECT id, title, price FROM product";
+$result = $conn->query($sql);
+?>
+
+<div class="container mx-auto px-20 py-10">
+  <h2 class="text-2xl font-bold text-blue-700 mb-5">Add Product</h2>
+  <form method="POST" action="">
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="product_name">Product Name</label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="product_name" name="product_name" type="text" placeholder="Product Name">
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="product_price">Product Price</label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="product_price" name="product_price" type="text" placeholder="Product Price">
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 text-sm font-bold mb-2" for="product_price">Description</label>
+      <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="Description" name="description" type="text" placeholder="Product Price">
+    </div>
+    <div class="flex items-center justify-between">
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+        Add Product
+      </button>
+    </div>
+  </form>
+</div>
+
+<div class="container mx-auto px-20 py-10">
+  <h2 class="text-2xl font-bold text-blue-700 mb-5">Products</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <?php
+    if ($result->num_rows > 0) {
+      while ($row = $result->fetch_assoc()) {
+        echo "<div class='bg-white shadow-md rounded-lg p-4'>";
+        echo "<h3 class='text-lg font-bold text-blue-700'>" . $row["name"] . "</h3>";
+        echo "<p class='text-gray-600'>$" . $row["price"] . "</p>";
+        echo "</div>";
+      }
+    } else {
+      echo "No products found";
+    }
+    $conn->close();
+    ?>
+  </div>
+</div>
