@@ -18,7 +18,7 @@
       <div>
         <label class="text-xl font-bold text-white">Store</label>
         <a href="#" class="text-white hover:text-gray-200 px-3">Home</a>
-        <a href="./index.php" class="text-white hover:text-gray-200 px-3">Log Out</a>
+        <a href="./login.php" class="text-white hover:text-gray-200 px-3">Log Out</a>
       </div>
       <div class="flex items-center">
         <span class="text-white mr-5">Username</span>
