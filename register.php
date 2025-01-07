@@ -1,6 +1,6 @@
 <?php
 include('db.php');
-
+session_start();
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $username = mysqli_real_escape_string($conn, $_POST['username']);
@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Insert the user into the database
     $sql = "INSERT INTO user (username, password) VALUES ('$username', '$hashed_password')";
     if ($conn->query($sql) === TRUE) {
+      $_SESSION['username'] = $username;
       echo "<script>alert('Registration successful!');
       window.location.href='main.php';  </script>";
     } else {

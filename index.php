@@ -1,5 +1,6 @@
 <?php
 include('db.php');
+session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $username = mysqli_real_escape_string($conn, $_POST['username']);
   $password = mysqli_real_escape_string($conn, $_POST['password']);
@@ -12,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $result->fetch_assoc();
     // Verify the password
     if (password_verify($password, $user['password'])) {
+      $_SESSION['username'] = $username;
       echo "<script>alert('Login successful!');
       window.location.href='main.php';</script>";
     } else {
@@ -72,7 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <button
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="submit">
-          <!-- onclick="window.location.href='./main.php'" -->
           Sign In
         </button>
     </form>

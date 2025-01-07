@@ -1,5 +1,12 @@
 <?php
 include('db.php');
+session_start();
+
+if (!isset($_SESSION['username'])) {
+  header('Location: index.php'); // Redirect to login if not logged in
+  exit();
+}
+
 
 // Add a product to the database
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_name'])) {
@@ -35,10 +42,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_name'])) {
       <div>
         <label class="text-xl font-bold text-white">Store</label>
         <a href="#" class="text-white hover:text-gray-200 px-3">Home</a>
-        <a href="./index.php" class="text-white hover:text-gray-200 px-3">Log Out</a>
+        <a href="./index.php" class="text-white hover:text-gray-200 px-3" onclick="onclick=" <?php
+                                                                                              session_destroy(); // Destroy the session
+                                                                                              // header('Location: index.php'); // Redirect to login page
+                                                                                              // exit();
+                                                                                              ?>"">Log Out</a>
       </div>
       <div class="flex items-center">
-        <span class="text-white mr-5">Username</span>
+        <span class="text-white mr-5"><?php echo htmlspecialchars($_SESSION['username']); ?>!</span>
         <img class="w-8 h-8 rounded-full" src="https://via.placeholder.com/150" alt="Avatar" />
       </div>
     </div>
