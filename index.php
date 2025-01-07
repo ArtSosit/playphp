@@ -1,66 +1,75 @@
+<?php
+include('db.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login Page</title>
+  <title>Store Website</title>
+  <!-- เชื่อมโยงไฟล์ CSS -->
+  <link rel="stylesheet" href="styles.css" />
   <link
     href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
     rel="stylesheet" />
 </head>
 
-<body
-  class="bg-gradient-to-r from-blue-200 via-blue-300 to-blue-400 flex items-center justify-center h-screen">
-  <div class="w-full max-w-xs">
-    <form class="bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4">
-      <div class="mb-4">
-        <label
-          class="block text-blue-800 text-sm font-bold mb-2"
-          for="username">
-          Username
-        </label>
-        <input
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-blue-800 leading-tight focus:outline-none focus:shadow-outline"
-          id="username"
-          type="text"
-          placeholder="Username" />
+<body>
+  <!-- Navbar -->
+  <nav>
+    <div class="container">
+      <div>
+        <label>Store</label>
+        <a href="#" class="hover">Home</a>
+        <a href="./index.php" class="hover">Log Out</a>
       </div>
-      <div class="mb-6">
-        <label
-          class="block text-blue-800 text-sm font-bold mb-2"
-          for="password">
-          Password
-        </label>
-        <input
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-blue-800 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-          id="password"
-          type="password"
-          placeholder="******************" />
+      <div class="flex items-center">
+        <span>Username</span>
+        <img class="avatar" src="https://via.placeholder.com/150" alt="Avatar" />
       </div>
-      <div class="flex items-center justify-between">
-        <button
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          type="button"
-          onclick="window.location.href='./main.php'">ph
-          Sign In
-        </button>
-        <a
-          class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-          href="">
-          Forgot Password?
-        </a>
-      </div>
+    </div>
+  </nav>
 
-      <div class="text-center mt-4">
-        <p class="text-blue-600 text-sm">
-          Don't have an account?
-          <a href="./register.php" class="text-blue-500 hover:text-blue-800">
-            Sign up
-          </a>
-        </p>
+  <!-- Main Content -->
+  <div class="container main-content">
+    <div class="product-grid">
+      <h2>Products</h2>
+      <div class="grid">
+        <?php
+        $sql = "SELECT id, title, descrip, price FROM product";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+          while ($row = $result->fetch_assoc()) {
+            echo "<div class='product-card'>";
+            echo "<h3>" . htmlspecialchars($row["title"]) . "</h3>";
+            echo "<p>" . htmlspecialchars($row["descrip"]) . "</p>";
+            echo "<p>$" . htmlspecialchars($row["price"]) . "</p>";
+            echo "</div>";
+          }
+        } else {
+          echo "<p>No products found.</p>";
+        }
+        ?>
       </div>
-    </form>
+    </div>
+
+    <!-- Add Product Form -->
+    <div class="add-product">
+      <h2>Add Product</h2>
+      <form method="POST" action="">
+        <label for="product_name">Product Name</label>
+        <input id="product_name" name="product_name" type="text" placeholder="Product Name">
+
+        <label for="product_price">Product Price</label>
+        <input id="product_price" name="product_price" type="text" placeholder="Product Price">
+
+        <label for="description">Description</label>
+        <input id="description" name="description" type="text" placeholder="Description">
+
+        <button type="submit">Add Product</button>
+      </form>
+    </div>
   </div>
 </body>
 
