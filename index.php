@@ -1,75 +1,96 @@
 <?php
 include('db.php');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $username = mysqli_real_escape_string($conn, $_POST['username']);
+  $password = mysqli_real_escape_string($conn, $_POST['password']);
+
+  // Fetch the user from the database
+  $sql = "SELECT * FROM user WHERE username='$username'";
+  $result = $conn->query($sql);
+
+  if ($result->num_rows > 0) {
+    $user = $result->fetch_assoc();
+    // Verify the password
+    if (password_verify($password, $user['password'])) {
+      echo "<script>alert('Login successful!');
+      window.location.href='main.php';</script>";
+    } else {
+      echo "<script>alert('Invalid password!');</script>";
+    }
+  } else {
+    echo "<script>alert('No user found with that username!');</script>";
+  }
+}
+
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Store Website</title>
-  <!-- เชื่อมโยงไฟล์ CSS -->
+  <title>Login Page</title>
   <link rel="stylesheet" href="styles.css" />
   <link
     href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
     rel="stylesheet" />
 </head>
 
-<body>
-  <!-- Navbar -->
-  <nav>
-    <div class="container">
-      <div>
-        <label>Store</label>
-        <a href="#" class="hover">Home</a>
-        <a href="./index.php" class="hover">Log Out</a>
+<body
+  class="bg-gradient-to-r from-blue-200 via-blue-300 to-blue-400 flex items-center justify-center h-screen">
+  <div class="w-full max-w-xs">
+    <form class="bg-white shadow-lg rounded-lg px-8 pt-6 pb-8 mb-4" method="POST">
+      <div class="mb-4">
+        <label
+          class="block text-blue-800 text-sm font-bold mb-2"
+          for="username">
+          Username
+        </label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-blue-800 leading-tight focus:outline-none focus:shadow-outline"
+          id="username"
+          name="username"
+          type="text"
+          placeholder="Username" />
       </div>
-      <div class="flex items-center">
-        <span>Username</span>
-        <img class="avatar" src="https://via.placeholder.com/150" alt="Avatar" />
+      <div class="mb-6">
+        <label
+          class="block text-blue-800 text-sm font-bold mb-2"
+          for="password">
+          Password
+        </label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-blue-800 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          id="password"
+          type="password"
+          name="password"
+          placeholder="******************" />
       </div>
-    </div>
-  </nav>
+      <div class="flex items-center justify-between">
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="submit">
+          <!-- onclick="window.location.href='./main.php'" -->
+          Sign In
+        </button>
+    </form>
+    <a
+      class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+      href="">
+      Forgot Password?
+    </a>
+  </div>
+  <div class="text-center mt-4">
+    <p class="text-white text-sm">
+      Don't have an account?
+      <a href="./register.php" class="text-white hover:text-blue-800 font-bold">
+        Sign up
+      </a>
+    </p>
+  </div>
 
-  <!-- Main Content -->
-  <div class="container main-content">
-    <div class="product-grid">
-      <h2>Products</h2>
-      <div class="grid">
-        <?php
-        $sql = "SELECT id, title, descrip, price FROM product";
-        $result = $conn->query($sql);
-        if ($result->num_rows > 0) {
-          while ($row = $result->fetch_assoc()) {
-            echo "<div class='product-card'>";
-            echo "<h3>" . htmlspecialchars($row["title"]) . "</h3>";
-            echo "<p>" . htmlspecialchars($row["descrip"]) . "</p>";
-            echo "<p>$" . htmlspecialchars($row["price"]) . "</p>";
-            echo "</div>";
-          }
-        } else {
-          echo "<p>No products found.</p>";
-        }
-        ?>
-      </div>
-    </div>
-
-    <!-- Add Product Form -->
-    <div class="add-product">
-      <h2>Add Product</h2>
-      <form method="POST" action="">
-        <label for="product_name">Product Name</label>
-        <input id="product_name" name="product_name" type="text" placeholder="Product Name">
-
-        <label for="product_price">Product Price</label>
-        <input id="product_price" name="product_price" type="text" placeholder="Product Price">
-
-        <label for="description">Description</label>
-        <input id="description" name="description" type="text" placeholder="Description">
-
-        <button type="submit">Add Product</button>
-      </form>
-    </div>
   </div>
 </body>
 
