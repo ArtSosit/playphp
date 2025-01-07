@@ -55,7 +55,7 @@
         </button>
         <a
           class="inline-block align-baseline font-bold text-sm text-blue-600 hover:text-blue-800"
-          href="login.php">
+          href="index.php">
           Already have an account?
         </a>
       </div>
